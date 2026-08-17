@@ -13,6 +13,7 @@ REQUIRED_SKILLS = {
     "full-development",
     "sync-project-knowledge",
     "record-task-log",
+    "spec-driven-change",
     "track-change-trace",
 }
 
