@@ -1,6 +1,6 @@
 {
   "name": "adaptive-agent-development",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "skillsDirectory": ".agents/skills",
   "instructionFile": "AGENTS.md",
   "portableStandard": "Agent Skills"
