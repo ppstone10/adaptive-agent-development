@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 REQUIRED_SKILLS = {
@@ -16,6 +17,68 @@ REQUIRED_SKILLS = {
     "spec-driven-change",
     "track-change-trace",
 }
+
+DAILY_FILE = re.compile(r"^\d{4}-\d{2}-\d{2}\.md$")
+WORKLOG_HEADING = re.compile(
+    r"^## (?:T-\S+ · )?(\d{2}:\d{2}:\d{2})[–-]\d{2}:\d{2}:\d{2} · L[0-5] ·"
+)
+LEGACY_SIMPLE_LOG = re.compile(
+    r"^- (\d{2}:\d{2}:\d{2})[–-]\d{2}:\d{2}:\d{2} · L[01] ·"
+)
+TRACE_CHECKPOINT = re.compile(r"^### (\d{2}:\d{2}:\d{2}) ·")
+
+
+def seconds(value: str) -> int:
+    hour, minute, second = (int(part) for part in value.split(":"))
+    return hour * 3600 + minute * 60 + second
+
+
+def check_nondecreasing(
+    path: Path, entries: list[tuple[int, str]], problems: list[str]
+) -> None:
+    previous: tuple[int, str] | None = None
+    for line_number, value in entries:
+        if previous is not None and seconds(value) < seconds(previous[1]):
+            problems.append(
+                f"{path}: 第 {line_number} 行时间 {value} 早于前一记录 {previous[1]}"
+            )
+        previous = (line_number, value)
+
+
+def check_history_order(project: Path, problems: list[str]) -> None:
+    worklogs = project / "docs" / "worklogs"
+    if worklogs.is_dir():
+        for path in sorted(worklogs.iterdir()):
+            if not path.is_file() or not DAILY_FILE.fullmatch(path.name):
+                continue
+            entries: list[tuple[int, str]] = []
+            for line_number, line in enumerate(
+                path.read_text(encoding="utf-8").splitlines(), start=1
+            ):
+                match = WORKLOG_HEADING.match(line)
+                legacy = LEGACY_SIMPLE_LOG.match(line)
+                if match:
+                    entries.append((line_number, match.group(1)))
+                elif legacy:
+                    entries.append((line_number, legacy.group(1)))
+                    problems.append(
+                        f"{path}: 第 {line_number} 行 L0/L1 不是独立二级标题"
+                    )
+            check_nondecreasing(path, entries, problems)
+
+    traces = project / "docs" / "traces"
+    if traces.is_dir():
+        for path in sorted(traces.iterdir()):
+            if not path.is_file() or not DAILY_FILE.fullmatch(path.name):
+                continue
+            entries: list[tuple[int, str]] = []
+            for line_number, line in enumerate(
+                path.read_text(encoding="utf-8").splitlines(), start=1
+            ):
+                match = TRACE_CHECKPOINT.match(line)
+                if match:
+                    entries.append((line_number, match.group(1)))
+            check_nondecreasing(path, entries, problems)
 
 
 def main() -> int:
@@ -47,6 +110,8 @@ def main() -> int:
     for name in sorted(REQUIRED_SKILLS):
         if not (skill_root / name / "SKILL.md").is_file():
             problems.append(f"缺少 Skill：{name}")
+
+    check_history_order(project, problems)
 
     existing_docs = [
         name
