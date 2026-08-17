@@ -27,6 +27,8 @@ description: 在完成或实质设计一项变更后，核对项目文档与持�
 - 问题 4 更新 LEARNING。
 - 问题 5 在 `docs/traces/` 下创建一个聚焦文件。
 
+每日任务日志由 `record-task-log` 单独追加，不属于知识同步，也不能代替上述文档。
+
 创建新文档类型或目标可能重叠时，先阅读 [references/writing-rules.md](references/writing-rules.md)。
 
 ## 3. 精准编辑

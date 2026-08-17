@@ -7,6 +7,7 @@
 - `skills/focused-fix`：局部根因修复流程。
 - `skills/full-development`：标准、重大和关键三档完整开发流程。
 - `skills/sync-project-knowledge`：按影响同步文档并蒸馏经验。
+- `skills/record-task-log`：在 L2-L5 收尾时按等级追加每日 Agent 任务记录。
 - `scripts/install.py`：安装或更新受管工作流区块与项目 Skill。
 - `scripts/audit.py`：执行只读结构审计。
 - `skills/full-development/references/research-guide.md`：仅在新方案触发时加载的有限调研方法。
@@ -25,6 +26,7 @@
 5. 项目文档按事实所有权触发加载，不作为启动时的固定阅读包。
 6. 只有持久项目事实或经验变化时才加载 `sync-project-knowledge`。
 7. 结束时用已有证据执行最小收尾；代码类修改生成 Commit 文稿，但不自动提交或推送。
+8. 将执行时间、等级、状态和分级结果追加到当天 worklog；L0/L1 由根规则直接记录，L2-L5 按需加载 `record-task-log`。
 
 ## 不变量
 
@@ -35,3 +37,4 @@
 - 概述文档负责当前事实，TRACE 负责过程证据。
 - 面向人的文本默认使用中文，技术兼容所需标识保持原值。
 - 前置调研与收尾均为条件触发，不得成为每轮固定的网络搜索或命令清单。
+- 每天每个项目只有一个 worklog 文件；日志按时间追加且不拥有当前项目事实。

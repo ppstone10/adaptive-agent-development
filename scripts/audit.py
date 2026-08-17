@@ -12,6 +12,7 @@ REQUIRED_SKILLS = {
     "focused-fix",
     "full-development",
     "sync-project-knowledge",
+    "record-task-log",
 }
 
 
