@@ -8,6 +8,7 @@
 - `skills/full-development`：标准、重大和关键三档完整开发流程。
 - `skills/sync-project-knowledge`：按影响同步文档并蒸馏经验。
 - `skills/record-task-log`：在 L2-L5 收尾时按等级追加每日 Agent 任务记录。
+- `skills/track-change-trace`：为复杂调查和重大修改建立稳定编号并追加跟踪修改演进。
 - `scripts/install.py`：安装或更新受管工作流区块与项目 Skill。
 - `scripts/audit.py`：执行只读结构审计。
 - `skills/full-development/references/research-guide.md`：仅在新方案触发时加载的有限调研方法。
@@ -27,6 +28,7 @@
 6. 只有持久项目事实或经验变化时才加载 `sync-project-knowledge`。
 7. 结束时用已有证据执行最小收尾；代码类修改生成 Commit 文稿，但不自动提交或推送。
 8. 将执行时间、等级、状态和分级结果追加到当天 worklog；L0/L1 由根规则直接记录，L2-L5 按需加载 `record-task-log`。
+9. 复杂 L2/演进型 L3 按需、L4/L5 强制使用 `track-change-trace`，在当天 TRACE 追加开始、实质调整和最终映射。
 
 ## 不变量
 
@@ -38,3 +40,5 @@
 - 面向人的文本默认使用中文，技术兼容所需标识保持原值。
 - 前置调研与收尾均为条件触发，不得成为每轮固定的网络搜索或命令清单。
 - 每天每个项目只有一个 worklog 文件；日志按时间追加且不拥有当前项目事实。
+- 每天每个项目只有一个 TRACE 文件；检查点不可改写，结论变化通过更正或取代事件表达。
+- worklog 使用任务编号索引执行结果，TRACE 使用同一编号跟踪修改演进，两者都不拥有当前项目事实。
